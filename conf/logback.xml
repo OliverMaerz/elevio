@@ -38,4 +38,7 @@
     <appender-ref ref="ASYNCSTDOUT" />
   </root>
 
+  <!-- turn on info logging for some classes to better see what the application is doing -->
+  <logger name="controllers.ArticleController2" level="INFO"/>
+
 </configuration>
