@@ -7,20 +7,32 @@ import scala.concurrent.duration._
 import play.api.mvc._
 import play.api.libs.ws._
 import akka.actor.ActorSystem
+import models.Article
 import play.api.Logger
+import play.api.libs.json.Reads._
 
 import scala.util.{Failure, Success}
-
-case class Person(title: String, id: Int)
 
 class ArticleController2 @Inject()(ws: WSClient, val controllerComponents: ControllerComponents,
                                    ec: ExecutionContext, actorSystem: ActorSystem)(implicit exec: ExecutionContext)
   extends BaseController {
 
-  val logger = Logger(this.getClass)
+  // TODO load config ...
 
-  def getList2: Action[AnyContent] = Action.async {
-    makeAPICall("https://api.elev.io/v1/articles/1").map { msg => Ok(views.html.articles((msg.json \ "article" \ "title").as[String])) }
+  private val logger = Logger(this.getClass)
+
+  def getArticles: Action[AnyContent] = Action.async { implicit request: Request[AnyContent] =>
+    makeAPICall("https://api.elev.io/v1/articles").map {
+      msg => Ok(views.html.articles {
+        (msg.json \ "articles").as[List[Article]]
+      })
+    }
+  }
+
+  def getArticle(id: Long): Action[AnyContent] = Action.async {
+    makeAPICall("https://api.elev.io/v1/articles/"+id.toString).map {
+      msg => Ok(views.html.article((msg.json \ "article" \ "title").as[String]))
+    }
   }
 
   def makeAPICall(url: String): Future[WSResponse] = {
@@ -38,6 +50,8 @@ class ArticleController2 @Inject()(ws: WSClient, val controllerComponents: Contr
     }
     call
   }
+
+
 }
 
 /*
@@ -46,6 +60,8 @@ web pages of interest
 
 json to model examples
 https://pedrorijo.com/blog/scala-json/
+
+https://www.playframework.com/documentation/2.7.x/ScalaJsonCombinators
 
 api calls
 https://www.playframework.com/documentation/2.7.x/ScalaWS

@@ -1,81 +1,36 @@
 package models
 
-import javax.inject.Inject
-import java.io.FileInputStream
-import java.util.Properties
-
-import akka.parboiled2.RuleTrace.Action
-import play.api.Logger
-import play.api.libs.ws._
 import play.api.libs.json._
-
-import scala.concurrent.{ExecutionContext, Future}
-import scala.concurrent.ExecutionContext.Implicits.global
-
-case class Art(title: String, id: Int)
-
-class Article @Inject()(ws: WSClient, ec: ExecutionContext) {
-
-  val articleUrl = "https://api.elev.io/v1/articles"
-  val logger = Logger(this.getClass)
-
-  object Article {
+import play.api.libs.json.Reads._
+import play.api.libs.functional.syntax._
 
 
-    private var articleList: List[Article] = List()
+case class Article(id:Int, title: String, body: Option[String] = None)
+// body parameter is optional as it is not returned in the API request for a list of articles
 
-    def list: List[Article] = {
-      articleList
-    }
+object Article {
+  implicit val articleReads: Reads[Article] = (
+    (JsPath \ "id").read[Int] and
+      (JsPath \ "title").read[String] and
+      (JsPath \ "body").readNullable[String]
+    )(Article.apply _)
+}
 
-    def get(articleId: Int): Article = {
-      articleList(articleId)
-    }
 
-    // https://www.playframework.com/documentation/2.7.x/ScalaWS
-    // https://www.playframework.com/documentation/2.7.x/ScalaAsync
+case class Articles(entries: Int, articles: List[Article])
 
-    def retrieveArticle() : Unit = {
-      //articleId: Int
-      var properties: Properties = new Properties()
-      try {
-        /* Loading api key and token from /conf/api.conf file to authenticate requests sent to elevio */
-        properties.load(new FileInputStream("conf/api.conf"))
-        val key: String = properties.getProperty("key")
-        val token: String = "Bearer " + properties.getProperty("token")
+object Articles {
+  import Article._
+  implicit val articlesReads: Reads[Articles] = (
+    (JsPath \ "entries").read[Int] and
+      (JsPath \ "articles").read[List[Article]]
+    )(Articles.apply _)
 
-        /* Build the request to then send to elevio */
-        val request: WSRequest = ws.url(articleUrl)
-        val apiRequest : WSRequest =
-          request
-            .addHttpHeaders("key" -> key)
-            .addHttpHeaders("token" -> token)
+}
 
-        // val response: Future[WSResponse] = apiRequest.get()
-        /*val futureResult: Future[String] = apiRequest.get().map { response =>
-          (response.json \ "articles" \ "title").as[String]
-        }*/
 
-        implicit val articleReads: Reads[Art] = Json.reads[Art]
 
-        val futureResult: Future[JsResult[Art]] = apiRequest.get().map { response =>
-          (response.json \ "articles").validate[Art]
-        }
 
-        logger.info("Retrieving articles via API ")
-        //return articleList
-      } catch {
-        case exp: Exception =>
-          logger.error("Error retrieving articles")
-      }
-    } // def retrieveArticle
 
-    /*
-    def asyncArticle = Action.async {
 
-    }
 
-     */
-
-  } // object
-} // class

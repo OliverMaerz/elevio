@@ -35,7 +35,7 @@ class ArticleController @Inject()(ws: WSClient, executionContext: ExecutionConte
   // }
 
   def getListOfArticles: Action[AnyContent] = Action {
-    Ok(views.html.articles("Placeholder for List of Articles ..."))
+    Ok(views.html.article("Placeholder for List of Articles ..."))
   }
   /*
   def message: Action[AnyContent] = Action.async {
