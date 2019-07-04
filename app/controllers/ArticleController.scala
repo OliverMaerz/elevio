@@ -15,7 +15,7 @@ class MyExecutionContextImpl @Inject()(system: ActorSystem)
   with MyExecutionContext
 
 /**
- * This controller handles all article related tasks
+ * This controller handles all error related tasks
  *
  * @param cc standard controller components
  * @param actorSystem `ActorSystem`'s `Scheduler` to run code after a delay.

@@ -116,6 +116,10 @@ body {
     font-weight: 700;
 }
 
+.cover-heading{
+    color: rgb(255, 128, 0);
+}
+
 
 /*
  * Footer
@@ -124,3 +128,16 @@ body {
     color: rgba(255, 255, 255, .5);
 }
 
+
+/*
+ * ul from Article list
+ */
+.content ul {
+    text-align: left;
+    font-size: 120%;
+    list-style-type: none;
+    display: -moz-inline-stack;
+    display: inline-block;
+    zoom: 1;
+    *display: inline;
+}
