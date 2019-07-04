@@ -1,7 +1,7 @@
 @*
 * Template to display list of Articles
 *@
-@(articles: List[Article])(implicit request: RequestHeader)
+@(articleList: ArticleList)(implicit request: RequestHeader)
 
 @*
 * Call the `main` template with two arguments. The first
@@ -10,7 +10,7 @@
 *@
 @main("Articles") {
     <ul>
-        @articles.map { article =>
+        @articleList.article.map { article =>
             <li>
                 <a href="@request.uri/@article.id">@Html(article.title)</a>
             </li>

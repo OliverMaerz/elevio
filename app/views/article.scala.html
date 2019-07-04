@@ -2,13 +2,21 @@
 * This template takes a single argument, a String containing a
 * message to display.
 *@
-@(title: String)
+@import play.shaded.oauth.oauth.signpost.signature.HmacSha1MessageSigner
+@(article: Article)
 
 @*
 * Call the `main` template with two arguments. The first
 * argument is a `String` with the title of the page, the second
 * argument is an `Html` object containing the body of the page.
 *@
-@main(title) {
-    @title
+@main(article.title) {
+    @*article.translations.take(1)*@
+
+    @article.translations.map { translation =>
+        <p>
+            @Html(translation.head.body)
+        </p>
+    }
+
 }

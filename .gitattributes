@@ -1,0 +1,2 @@
+# Github was listing project as "CSS" so manually overwrite as "Scala"
+*.rb linguist-language=Scala

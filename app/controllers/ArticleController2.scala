@@ -7,7 +7,7 @@ import scala.concurrent.duration._
 import play.api.mvc._
 import play.api.libs.ws._
 import akka.actor.ActorSystem
-import models.Article
+import models.{Article, ArticleList}
 import play.api.Logger
 import play.api.libs.json.Reads._
 
@@ -21,20 +21,23 @@ class ArticleController2 @Inject()(ws: WSClient, val controllerComponents: Contr
 
   private val logger = Logger(this.getClass)
 
+  /* Get a list of articles and map response to Articles class from models*/
   def getArticles: Action[AnyContent] = Action.async { implicit request: Request[AnyContent] =>
     makeAPICall("https://api.elev.io/v1/articles").map {
       msg => Ok(views.html.articles {
-        (msg.json \ "articles").as[List[Article]]
+        (msg.json).as[ArticleList]
       })
     }
   }
 
+  /* Get data for the article with id given and map response to Article class from models */
   def getArticle(id: Long): Action[AnyContent] = Action.async {
     makeAPICall("https://api.elev.io/v1/articles/"+id.toString).map {
-      msg => Ok(views.html.article((msg.json \ "article" \ "title").as[String]))
+      msg => Ok(views.html.article((msg.json \ "article").as[Article]))
     }
   }
 
+  /* Make the actual call to the elevio API and return the JSON response */
   def makeAPICall(url: String): Future[WSResponse] = {
     val call =  ws.url(url)
                   .addHttpHeaders("x-api-key" -> "a59c720dc2cbd90048c027a63acae560")
