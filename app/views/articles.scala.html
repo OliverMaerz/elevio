@@ -9,7 +9,7 @@
 * argument is an `Html` object containing the body of the page.
 *@
 @main("Articles") {
-    <ul>
+    <ul class="article">
         @articleList.article.map { article =>
             <li>
                 <a href="@request.uri/@article.id">@Html(article.title)</a>

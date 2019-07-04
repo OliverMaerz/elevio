@@ -1,5 +1,8 @@
 package controllers
 
+import java.io.FileInputStream
+import java.util.Properties
+
 import javax.inject.Inject
 
 import scala.concurrent.{ExecutionContext, Future}
@@ -8,8 +11,9 @@ import play.api.mvc._
 import play.api.libs.ws._
 import akka.actor.ActorSystem
 import models.{Article, ArticleList}
+import org.joda.time.DateTime
+import org.joda.time.format.DateTimeFormat
 import play.api.Logger
-import play.api.libs.json.Reads._
 
 import scala.util.{Failure, Success}
 
@@ -17,15 +21,29 @@ class ArticleController2 @Inject()(ws: WSClient, val controllerComponents: Contr
                                    ec: ExecutionContext, actorSystem: ActorSystem)(implicit exec: ExecutionContext)
   extends BaseController {
 
-  // TODO load config ...
-
+  /* Create logger instance to log successful api requests and errors */
   private val logger = Logger(this.getClass)
+
+  /* load config (api key and token) */
+  var properties: Properties = new Properties()
+  try {
+    /* Loading api key and token from /conf/api.conf file to authenticate requests sent to elevio */
+    properties.load(new FileInputStream("conf/api.conf"))
+    val key: String = properties.getProperty("key")
+    val token: String = "Bearer " + properties.getProperty("token")
+  } catch {
+    case exp: Exception =>
+      logger.error("Error retrieving articles")
+  }
+
+  def format(date: DateTime, pattern: String = "yyyy-MM-dd") = DateTimeFormat.forPattern(pattern).print(date)
 
   /* Get a list of articles and map response to Articles class from models*/
   def getArticles: Action[AnyContent] = Action.async { implicit request: Request[AnyContent] =>
     makeAPICall("https://api.elev.io/v1/articles").map {
-      msg => Ok(views.html.articles {
-        (msg.json).as[ArticleList]
+      apiResponse => Ok(views.html.articles {
+        // process the whole response and map to ArticleList
+        apiResponse.json.as[ArticleList]
       })
     }
   }
@@ -33,7 +51,10 @@ class ArticleController2 @Inject()(ws: WSClient, val controllerComponents: Contr
   /* Get data for the article with id given and map response to Article class from models */
   def getArticle(id: Long): Action[AnyContent] = Action.async {
     makeAPICall("https://api.elev.io/v1/articles/"+id.toString).map {
-      msg => Ok(views.html.article((msg.json \ "article").as[Article]))
+      apiResponse => Ok(views.html.article {
+        // process child of "article" part of the JSON response and map to Article
+        (apiResponse.json \ "article").as[Article]
+      })
     }
   }
 
@@ -53,8 +74,6 @@ class ArticleController2 @Inject()(ws: WSClient, val controllerComponents: Contr
     }
     call
   }
-
-
 }
 
 /*
