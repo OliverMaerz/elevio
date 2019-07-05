@@ -10,7 +10,7 @@ import play.api.Logger
 import play.api.libs.json.JsResultException
 
 /**
-  * Overwrite the ErrorHandler and create nicer error pages
+  * Custom Errorhandler: Overwrites the ErrorHandler and creates nicer error pages
   * using the template error.scala.html in the views folder
   */
 @Singleton

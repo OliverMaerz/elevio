@@ -6,7 +6,7 @@ import play.api.data.Forms._
 import play.api.data.validation.Constraints._
 
 
-/* class to hold the data entered in the search form (currently only the text field for keywords)  */
+/** Class to hold the data entered in the search form (currently only the text field for keywords)  */
 case class Search(keywords: String)
 
 object Search {

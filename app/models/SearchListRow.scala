@@ -4,6 +4,7 @@ import play.api.libs.functional.syntax._
 import play.api.libs.json.Reads._
 import play.api.libs.json._
 
+/** Class to hold one row of the list of search results */
 case class SearchListRow(id: Long, title: String, category_id: Long)
 
 object SearchListRow {

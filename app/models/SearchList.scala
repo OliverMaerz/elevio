@@ -5,6 +5,7 @@ import play.api.libs.json.Reads._
 import play.api.libs.functional.syntax._
 
 
+/** Class to hold the list of articles from a search response */
 case class SearchList(keywords: String, pages: Long, entries: Long, pageSize: Long, pageNumber: Long, results: List[SearchListRow])
 
 object SearchList {

@@ -15,15 +15,17 @@ import scala.concurrent.duration._
 import scala.concurrent.{ExecutionContext, Future}
 import scala.util.{Failure, Success}
 
-
+/** Class to get a list articles and article details */
 class ArticleController @Inject()(ws: WSClient, val controllerComponents: ControllerComponents,
                                   ec: ExecutionContext, actorSystem: ActorSystem)(implicit exec: ExecutionContext)
   extends BaseController with I18nSupport {
 
+
   /* Create logger instance to log successful api requests and errors */
   private val logger = Logger(this.getClass)
 
-  /* load config (api key and token from conf/api.conf) */
+
+  /** load config (api key and token from conf/api.conf) */
   private val properties: Properties = new Properties()
   try {
     /* Loading api key and token from /conf/api.conf file to authenticate requests sent to Elevio */
@@ -37,7 +39,7 @@ class ArticleController @Inject()(ws: WSClient, val controllerComponents: Contro
   private val numArticles: String = properties.getProperty("num_articles", "5")
 
 
-  /* Get a list of articles and map response to Articles class from models*/
+  /** Get a list of articles and map response to Articles class from models*/
   def getArticles(page: Int): Action[AnyContent] = Action.async { implicit request: Request[AnyContent] =>
     makeAPICall("https://api.elev.io/v1/articles", page).map {
       apiResponse => Ok(views.html.articles {
@@ -48,7 +50,7 @@ class ArticleController @Inject()(ws: WSClient, val controllerComponents: Contro
   }
 
 
-  /* Get data for the article with id given and map response to Article class from models */
+  /** Get data for the article with id given and map response to Article class from models */
   def getArticle(id: Long): Action[AnyContent] = Action.async {
     makeAPICall("https://api.elev.io/v1/articles/"+id.toString, 0).map {
       apiResponse => Ok(views.html.article {
@@ -59,7 +61,7 @@ class ArticleController @Inject()(ws: WSClient, val controllerComponents: Contro
   }
 
 
-  /* Make the actual call to the Elevio API and return the JSON response */
+  /** Make the actual call to the Elevio API and return the JSON response */
   def makeAPICall(url: String, page: Int): Future[WSResponse] = {
     logger.info("Page number received :" + page)
     val call =  ws.url(url)

@@ -7,6 +7,8 @@ import play.api.libs.functional.syntax._
 
 case class ArticleList(pages: Long, entries: Long, pageSize: Long, pageNumber: Long, article: List[Article])
 
+
+/** Class to hold the list of articles */
 object ArticleList {
   import Article._
   implicit val articleListReads: Reads[ArticleList] = (

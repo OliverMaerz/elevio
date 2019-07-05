@@ -6,7 +6,7 @@ import play.api.libs.functional.syntax._
 import org.joda.time.DateTime
 import org.joda.time.format.DateTimeFormat
 
-
+/** Class to hold the data for article details */
 case class Article(id:Long, date: DateTime, author: Option[String] = None, title: String, translations: Option[List[Translation]] = None)
 // Translation is optional as it is not returned in the API request for a list of articles
 

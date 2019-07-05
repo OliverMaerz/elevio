@@ -15,17 +15,17 @@ import scala.concurrent.duration._
 import scala.concurrent.{ExecutionContext, Future}
 import scala.util.{Failure, Success}
 
-
+/** Class to handle all the article search */
 class SearchArticleController @Inject()(ws: WSClient, val controllerComponents: ControllerComponents,
                                         ec: ExecutionContext, actorSystem: ActorSystem)(implicit exec: ExecutionContext)
   extends BaseController with I18nSupport {
 
 
-  /* Create logger instance to log successful api requests and errors */
+  /** Create logger instance to log successful api requests and errors */
   private val logger = Logger(this.getClass)
 
 
-  /* load config (api key and token from conf/api.conf) */
+  /** load config (api key and token from conf/api.conf) */
   private val properties: Properties = new Properties()
   try {
     /* Loading api key and token from /conf/api.conf file to authenticate requests sent to Elevio */
@@ -38,13 +38,13 @@ class SearchArticleController @Inject()(ws: WSClient, val controllerComponents: 
   private val token: String = "Bearer " + properties.getProperty("token")
   private val numArticles: String = properties.getProperty("num_articles", "5")
 
-  /* display the blank search form */
+  /** Display the blank search form */
   def searchArticlesForm: Action[AnyContent] = Action { implicit request =>
     Ok(views.html.articleSearchForm(Search.searchForm))
   }
 
 
-  /* Peceive and validate the search submit */
+  /** Receive and validate the search submit */
   def searchArticlesFormSubmission: Action[AnyContent] = Action { implicit request =>
     Search.searchForm.bindFromRequest.fold(
       formWithErrors => {
@@ -58,7 +58,7 @@ class SearchArticleController @Inject()(ws: WSClient, val controllerComponents: 
   }
 
 
-  /* Search Articles by keywords */
+  /** Search Articles by keywords */
   def searchArticles(keyWords: String, page: Int): Action[AnyContent] = Action.async { implicit request =>
     makeAPICall("https://api.elev.io/v1/search/en", page, keyWords).map {
       apiResponse => Ok(views.html.articleSearchResults {
@@ -69,7 +69,7 @@ class SearchArticleController @Inject()(ws: WSClient, val controllerComponents: 
   }
 
 
-  /* Make the actual call to the Elevio API and return the JSON response */
+  /** Make the actual call to the Elevio API and return the JSON response */
   def makeAPICall(url: String, page: Int, keywords: String): Future[WSResponse] = {
     logger.info("Page number received :" + page)
     val call =  ws.url(url)
