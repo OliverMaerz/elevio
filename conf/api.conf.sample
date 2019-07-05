@@ -4,3 +4,5 @@
 key = <copy an paste your key here>
 token = <copy and paste your token here>
 
+# How many Articles to show in lists (Articles page, search results pages etc.)
+num_articles = 5
