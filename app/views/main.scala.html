@@ -21,8 +21,9 @@
                 <div class="inner">
                     <h3 class="masthead-brand"><a class="nav-link active" href="/">Elevio Demo</a></h3>
                     <nav class="nav nav-masthead justify-content-center">
-                        <a class="nav-link active" href="/">Home</a>
-                        <a class="nav-link" href="@routes.ArticleController2.getArticles()">Articles</a>
+                        <a class="nav-link xactive" href="@routes.HomeController.index()">Home</a>
+                        <a class="nav-link" href="@routes.ArticleController.getArticles()">Articles</a>
+                        <a class="nav-link" href="@routes.SearchArticleController.searchArticlesForm()">Search</a>
                         <!-- a class="nav-link" href="/categories">Categories</a -->
                     </nav>
                 </div>

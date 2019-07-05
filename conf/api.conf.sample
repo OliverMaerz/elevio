@@ -1,9 +1,6 @@
-
-
-
 # create a read only key and token for elevio API and past the key and token below
 # then rename the file to api.conf
 
-key = "<copy an paste your key here>"
-token = "<copy and paste your token here>"
+key = <copy an paste your key here>
+token = <copy and paste your token here>
 

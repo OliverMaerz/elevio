@@ -14,7 +14,7 @@ import play.api.libs.json.JsResultException
   * using the template error.scala.html in the views folder
   */
 @Singleton
-class ErrorHandler extends HttpErrorHandler {
+class xErrorHandler extends HttpErrorHandler {
 
   private val logger = Logger(this.getClass)
 

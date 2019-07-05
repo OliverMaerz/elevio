@@ -9,14 +9,16 @@ GET     /                           controllers.HomeController.index
 GET     /assets/*file               controllers.Assets.versioned(path="/public", file: Asset)
 
 # List Articles on page
-GET     /articles                   controllers.ArticleController2.getArticles(page: Int ?= 1)
-
-# Search Articles with keywords
-GET     /articles/search            controllers.ArticleController2.searchArticlesForm()
-
-# Search Articles with keywords
-POST     /articles/search            controllers.ArticleController2.searchArticles(keywords: String ?= "", page: Int ?= 1)
+GET     /articles                   controllers.ArticleController.getArticles(page: Int ?= 1)
 
 # Get Article with id=id
-GET     /articles/:id               controllers.ArticleController2.getArticle(id: Long)
+GET     /articles/:id               controllers.ArticleController.getArticle(id: Long)
+
+# Search Articles with keywords
+GET     /articlesearch              controllers.SearchArticleController.searchArticlesForm()
+
+# Search Articles with keywords
++nocsrf
+GET     /articlesearch/go           controllers.SearchArticleController.searchArticles(keywords: String ?= "", page: Int ?= 1)
+# TODO: fix the bug with the CSRF 
 

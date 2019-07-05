@@ -14,7 +14,7 @@
         <ul class="article">
             @articleList.article.map { article =>
                 <li>
-                    <a href="@request.path/@article.id">@Html(article.title)</a>
+                    <a href="@routes.ArticleController.getArticle(article.id)">@Html(article.title)</a>
                 </li>
             }
         </ul>

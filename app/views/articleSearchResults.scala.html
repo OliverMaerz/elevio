@@ -1,7 +1,7 @@
 @*
 * Template to display list of Articles
 *@
-@(articleList: ArticleList)(implicit request: RequestHeader)
+@(searchList: SearchList)(implicit request: RequestHeader)
 
 @*
 * Call the `main` template with two arguments. The first
@@ -12,27 +12,27 @@
 
     <div>
         <ul class="article">
-            @articleList.article.map { article =>
+            @searchList.results.map { searchListRow: SearchListRow =>
                 <li>
-                    <a href="@request.path/@article.id">@Html(article.title)</a>
+                    <a href="@routes.ArticleController.getArticle(searchListRow.id.toLong)">@Html(searchListRow.title)</a>
                 </li>
             }
         </ul>
     </div>
 
-    @* TODO: refactor paginator into separate template  *@
+    @* TODO: refactor paginator into separate template to use for both search results and article list *@
     @* Paginator to click through the articlesList pages *@
     <div id="article_paginator">
         <nav class="paginator">
             <ul class="pagination">
                 @* "previous" button *@
-                <li class="page-item @{if (articleList.pageNumber == 1){ "disabled" }}"><a class="page-link" href="@request.path?page=@(articleList.pageNumber - 1)">Previous</a></li>
+                <li class="page-item @{if (searchList.pageNumber == 1){ "disabled" }}"><a class="page-link" href="@request.path?keywords=@searchList.keywords&page=@(searchList.pageNumber - 1)">Previous</a></li>
                 @* loop through the 1, 2, 3 ... buttons *@
-                @for( a <- Math.max(1, articleList.pageNumber-3) to Math.min(articleList.pages, articleList.pageNumber+3)){
-                        <li class="page-item @{if (articleList.pageNumber == a){ "active" }}"><a class="page-link" href="@request.path?page=@a">@a</a></li>
+                @for( a <- Math.max(1, searchList.pageNumber-3) to Math.min(searchList.pages, searchList.pageNumber+3)){
+                        <li class="page-item @{if (searchList.pageNumber == a){ "active" }}"><a class="page-link" href="@request.path?keywords=@searchList.keywords&page=@a">@a</a></li>
                 }
                 @* "next" button *@
-                <li class="page-item @{if (articleList.pageNumber >= articleList.pages) { "disabled" }}"><a class="page-link" href="@request.path?page=@(articleList.pageNumber + 1)">Next</a></li>
+                <li class="page-item @{if (searchList.pageNumber >= searchList.pages) { "disabled" }}"><a class="page-link" href="@request.path?keywords=@searchList.keywords&page=@(searchList.pageNumber + 1)">Next</a></li>
             </ul>
         </nav>
     </div>

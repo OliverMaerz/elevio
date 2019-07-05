@@ -9,7 +9,7 @@
 
 @main("Article Search") {
 
-    @form(action = routes.ArticleController2.searchArticles()) {
+    @form(action = routes.SearchArticleController.searchArticles(), 'method -> "GET") {
         @inputText(searchForm("keywords"), 'class -> "form-control", 'placeholder -> "Keywords to search for", '_label -> "")
         <input type="submit" value="Search" class="btn btn-info">
     }
