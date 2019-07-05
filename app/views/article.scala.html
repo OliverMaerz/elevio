@@ -10,7 +10,8 @@
 * argument is an `Html` object containing the body of the page.
 *@
 @main(article.title) {
-    @*article.translations.take(1)*@
+
+    @* TODO: Add some tabs to select/view a certain language and hide all other languages *@
 
     <div class="author">Last updated by : @(article.author) on @(article.date)</div>
     @article.translations.map { translation =>
@@ -18,5 +19,4 @@
             @Html(translation.head.body)
         </div>
     }
-
 }

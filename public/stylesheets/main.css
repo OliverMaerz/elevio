@@ -116,7 +116,7 @@ body {
 }
 
 .cover-heading{
-    color: rgb(255, 128, 0);
+    color: #fd7e14;
 }
 
 
@@ -150,7 +150,7 @@ body {
 }
 
 /*
- * tables
+ * Tables
  */
 
 .content td, th {
@@ -169,4 +169,31 @@ body {
     font-size: 14px;
     color: lightgrey;
     margin-bottom: 25px;
+}
+
+
+/*
+ * Pagination
+ */
+#article_paginator {
+    margin: auto;
+    width: 40%;
+    padding-top: 25px;
+}
+
+.page-item .page-link {
+    border: 1px solid lightgray;
+    background: #1d2124;
+    color: lightgray;
+}
+
+.page-item.active .page-link {
+    background: black;
+    color: white;
+    border-color: #fd7e14;
+}
+
+.page-item.disabled .page-link {
+    background: #1d2124;
+    color: gray;
 }

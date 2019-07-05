@@ -1,0 +1,16 @@
+@*
+* Call the `main` template with two arguments. The first
+* argument is a `String` with the title of the page, the second
+* argument is an `Html` object containing the body of the page.
+*@
+@import helper._
+
+@(searchForm: Form[Search])(implicit messages: Messages)
+
+@main("Article Search") {
+
+    @form(action = routes.ArticleController2.searchArticles()) {
+        @inputText(searchForm("keywords"), 'class -> "form-control", 'placeholder -> "Keywords to search for", '_label -> "")
+        <input type="submit" value="Search" class="btn btn-info">
+    }
+}

@@ -9,7 +9,13 @@ GET     /                           controllers.HomeController.index
 GET     /assets/*file               controllers.Assets.versioned(path="/public", file: Asset)
 
 # List Articles on page
-GET     /articles                   controllers.ArticleController2.getArticles
+GET     /articles                   controllers.ArticleController2.getArticles(page: Int ?= 1)
+
+# Search Articles with keywords
+GET     /articles/search            controllers.ArticleController2.searchArticlesForm()
+
+# Search Articles with keywords
+POST     /articles/search            controllers.ArticleController2.searchArticles(keywords: String ?= "", page: Int ?= 1)
 
 # Get Article with id=id
 GET     /articles/:id               controllers.ArticleController2.getArticle(id: Long)
