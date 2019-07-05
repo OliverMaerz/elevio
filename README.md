@@ -12,6 +12,14 @@ added a `conf/api.conf` with my read-only key/token to access the data, that I h
 The application was written using the Play 2.7 framework in IntelliJ - so reviewing it in IntelliJ should work out 
 of the box.
 
+#### Articles menu
+
+Select the articles menu to see a list of all articles. Then click on one of the titles to read the article.
+
+#### Search
+
+Select the search menu to open a search form. Enter the keywords you want to search for and click on search. 
+The titles of the articles with those keywords are then shown in a list. Click on any title of the search results to read the article. 
 
 #### Reviewing the application
 
