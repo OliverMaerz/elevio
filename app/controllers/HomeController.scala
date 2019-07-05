@@ -14,7 +14,7 @@ class HomeController @Inject()(cc: ControllerComponents) extends AbstractControl
    * Action to render an HTML page with a welcome message.
    */
   def index: Action[AnyContent] = Action { implicit request =>
-    Ok(views.html.index("Welcome to the Elevio Demo", "Placeholder text for front page"))
+    Ok(views.html.index("Welcome to the Elevio Demo", "Please click on any of the menu items in the upper right corner."))
   }
 
 }

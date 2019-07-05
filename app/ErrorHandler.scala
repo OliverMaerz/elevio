@@ -14,7 +14,7 @@ import play.api.libs.json.JsResultException
   * using the template error.scala.html in the views folder
   */
 @Singleton
-class xErrorHandler extends HttpErrorHandler {
+class ErrorHandler extends HttpErrorHandler {
 
   private val logger = Logger(this.getClass)
 
@@ -33,7 +33,7 @@ class xErrorHandler extends HttpErrorHandler {
           // logger.error(e.getMessage)
           Status(503)(views.html.error("Sorry, we are having difficulties retrieving the data you requested.\nPlease try again later. (Error 503)"))
         case e: JsResultException =>
-          Status(404)(views.html.error("Sorry, we we could not find the data you are looking for. (Error 404)"))
+          Status(404)(views.html.error("Sorry, we we could not find the article/data you are looking for. (Error 404)"))
         case _ =>
           // InternalServerError ("Oooopsie, A server error occurred: " + e.getMessage)
           //Status(500)(views.html.error(e.getMessage))

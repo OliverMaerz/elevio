@@ -10,32 +10,48 @@
 *@
 @main("Articles") {
 
-    <div>
-        <ul class="article">
+    @* Check if there have been any articles returned, show a little message other wise *@
+    @if((articleList.article != null) && articleList.article.isEmpty) {
+        <p>It looks like there are no articles yet.</p>
+    } else {
+        <div>
+            <ul class="article">
             @articleList.article.map { article =>
                 <li>
                     <a href="@routes.ArticleController.getArticle(article.id)">@Html(article.title)</a>
                 </li>
             }
-        </ul>
-    </div>
-
-    @* TODO: refactor paginator into separate template  *@
-    @* Paginator to click through the articlesList pages *@
-    <div id="article_paginator">
-        <nav class="paginator">
-            <ul class="pagination">
-                @* "previous" button *@
-                <li class="page-item @{if (articleList.pageNumber == 1){ "disabled" }}"><a class="page-link" href="@request.path?page=@(articleList.pageNumber - 1)">Previous</a></li>
-                @* loop through the 1, 2, 3 ... buttons *@
-                @for( a <- Math.max(1, articleList.pageNumber-3) to Math.min(articleList.pages, articleList.pageNumber+3)){
-                        <li class="page-item @{if (articleList.pageNumber == a){ "active" }}"><a class="page-link" href="@request.path?page=@a">@a</a></li>
-                }
-                @* "next" button *@
-                <li class="page-item @{if (articleList.pageNumber >= articleList.pages) { "disabled" }}"><a class="page-link" href="@request.path?page=@(articleList.pageNumber + 1)">Next</a></li>
             </ul>
-        </nav>
-    </div>
+        </div>
+        @* TODO: refactor paginator into separate template *@
+        @* Paginator to click through the articlesList pages *@
+        <div id="article_paginator">
+            <nav class="paginator">
+                <ul class="pagination">
+                    @* "previous" button *@
+                    <li class="page-item @{
+                        if(articleList.pageNumber == 1) {
+                            "disabled"
+                        }
+                    }"><a class="page-link" href="@request.path?page=@(articleList.pageNumber - 1)">Previous</a></li>
+                    @* loop through the 1, 2, 3 ... buttons *@
+                    @for(a <- Math.max(1, articleList.pageNumber - 3) to Math.min(articleList.pages, articleList.pageNumber + 3)) {
+                        <li class="page-item @{
+                            if(articleList.pageNumber == a) {
+                                "active"
+                            }
+                        }"><a class="page-link" href="@request.path?page=@a">@a</a></li>
+                    }
+                    @* "next" button *@
+                    <li class="page-item @{
+                        if(articleList.pageNumber >= articleList.pages) {
+                            "disabled"
+                        }
+                    }"><a class="page-link" href="@request.path?page=@(articleList.pageNumber + 1)">Next</a></li>
+                </ul>
+            </nav>
+        </div>
+    }
 }
 
 

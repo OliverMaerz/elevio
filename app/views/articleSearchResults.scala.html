@@ -8,35 +8,43 @@
 * argument is a `String` with the title of the page, the second
 * argument is an `Html` object containing the body of the page.
 *@
-@main("Search") {
+@main("Search Results") {
 
-    <div>
+    <p>Search for: <em>@searchList.keywords</em></p>
+
+    @if((searchList.results != null) && searchList.results.isEmpty){
+        <div>Sorry, we did not find any results for your search.</div>
+    } else {
+        <div>
         <ul class="article">
-            @searchList.results.map { searchListRow: SearchListRow =>
-                <li>
-                    <a href="@routes.ArticleController.getArticle(searchListRow.id.toLong)">@Html(searchListRow.title)</a>
-                </li>
-            }
+        @searchList.results.map { searchListRow: SearchListRow =>
+            <li>
+            <a href="@routes.ArticleController.getArticle(searchListRow.id.toLong)">@Html(searchListRow.title)</a>
+            </li>
+        }
         </ul>
-    </div>
+        </div>
 
-    @* TODO: refactor paginator into separate template to use for both search results and article list *@
-    @* Paginator to click through the articlesList pages *@
-    <div id="article_paginator">
-        <nav class="paginator">
-            <ul class="pagination">
-                @* "previous" button *@
-                <li class="page-item @{if (searchList.pageNumber == 1){ "disabled" }}"><a class="page-link" href="@request.path?keywords=@searchList.keywords&page=@(searchList.pageNumber - 1)">Previous</a></li>
-                @* loop through the 1, 2, 3 ... buttons *@
-                @for( a <- Math.max(1, searchList.pageNumber-3) to Math.min(searchList.pages, searchList.pageNumber+3)){
-                        <li class="page-item @{if (searchList.pageNumber == a){ "active" }}"><a class="page-link" href="@request.path?keywords=@searchList.keywords&page=@a">@a</a></li>
-                }
-                @* "next" button *@
-                <li class="page-item @{if (searchList.pageNumber >= searchList.pages) { "disabled" }}"><a class="page-link" href="@request.path?keywords=@searchList.keywords&page=@(searchList.pageNumber + 1)">Next</a></li>
-            </ul>
+        @* TODO: refactor paginator into separate template to use for both search results and article list *@
+        @* Paginator to click through the articlesList pages *@
+            <div id="article_paginator">
+                <nav class="paginator">
+                    <ul class="pagination">
+                    @* "previous" button *@
+                    <li class="page-item @{if (searchList.pageNumber == 1){ "disabled" }}"><a class="page-link" href="@request.path?keywords=@searchList.keywords&page=@(searchList.pageNumber - 1)">Previous</a></li>
+        @* loop through the 1, 2, 3 ... buttons *@
+        @for( a <- Math.max(1, searchList.pageNumber-3) to Math.min(searchList.pages, searchList.pageNumber+3)){
+            <li class="page-item @{if (searchList.pageNumber == a){ "active" }}"><a class="page-link" href="@request.path?keywords=@searchList.keywords&page=@a">@a</a></li>
+        }
+        @* "next" button *@
+            <li class="page-item @{if (searchList.pageNumber >= searchList.pages) { "disabled" }}"><a class="page-link" href="@request.path?keywords=@searchList.keywords&page=@(searchList.pageNumber + 1)">Next</a></li>
+        </ul>
         </nav>
-    </div>
+        </div>
+
+    }
 }
+
 
 
 
