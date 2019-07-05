@@ -12,13 +12,9 @@ case class Search(keywords: String)
 object Search {
   val searchForm: Form[Search] = Form(
     mapping(
-      "keywords" -> text
+      "keywords" -> nonEmptyText
     )(Search.apply)(Search.unapply)
+
   )
 
-  val searchFormConstraints = Form(
-    mapping(
-      "keywords" -> nonEmptyText,
-    )(Search.apply)(Search.unapply)
-  )
 }

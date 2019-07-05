@@ -5,7 +5,7 @@ import java.util.Properties
 
 import akka.actor.ActorSystem
 import javax.inject._
-import models.{Article, ArticleList, Search, SearchList}
+import models.{Search ,SearchList}
 import play.api.Logger
 import play.api.i18n.I18nSupport
 import play.api.libs.ws._
@@ -20,8 +20,10 @@ class SearchArticleController @Inject()(ws: WSClient, val controllerComponents: 
                                         ec: ExecutionContext, actorSystem: ActorSystem)(implicit exec: ExecutionContext)
   extends BaseController with I18nSupport {
 
+
   /* Create logger instance to log successful api requests and errors */
   private val logger = Logger(this.getClass)
+
 
   /* load config (api key and token from conf/api.conf) */
   private val properties: Properties = new Properties()
@@ -36,9 +38,23 @@ class SearchArticleController @Inject()(ws: WSClient, val controllerComponents: 
   private val token: String = "Bearer " + properties.getProperty("token")
   private val numArticles: String = properties.getProperty("num_articles", "5")
 
-
+  /* display the blank search form */
   def searchArticlesForm: Action[AnyContent] = Action { implicit request =>
     Ok(views.html.articleSearchForm(Search.searchForm))
+  }
+
+
+  /* Peceive and validate the search submit */
+  def searchArticlesFormSubmission: Action[AnyContent] = Action { implicit request =>
+    Search.searchForm.bindFromRequest.fold(
+      formWithErrors => {
+        BadRequest(views.html.articleSearchForm(formWithErrors))
+      },
+      searchData => {
+        val search = models.Search(searchData.keywords)
+        Redirect(routes.SearchArticleController.searchArticles(search.keywords, 1))
+      }
+    )
   }
 
 
@@ -64,7 +80,6 @@ class SearchArticleController @Inject()(ws: WSClient, val controllerComponents: 
       .addQueryStringParameters("query" -> keywords)
       .withRequestTimeout(10000.millis).get()
 
-
     call.onComplete{
       case Success(res) =>
         logger.info("API request successful")
@@ -76,25 +91,3 @@ class SearchArticleController @Inject()(ws: WSClient, val controllerComponents: 
     call
   }
 }
-
-
-/*
-
-web pages of interest
-
-json to model examples
-https://pedrorijo.com/blog/scala-json/
-
-https://www.playframework.com/documentation/2.7.x/ScalaJsonCombinators
-
-api calls
-https://www.playframework.com/documentation/2.7.x/ScalaWS
-
-async
-https://www.playframework.com/documentation/2.7.x/ScalaAsync
-
-akka
-https://www.toptal.com/scala/concurrency-and-fault-tolerance-made-easy-an-intro-to-akka
-
-*/
-

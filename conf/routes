@@ -15,10 +15,11 @@ GET     /articles                   controllers.ArticleController.getArticles(pa
 GET     /articles/:id               controllers.ArticleController.getArticle(id: Long)
 
 # Search Articles with keywords
-GET     /articlesearch              controllers.SearchArticleController.searchArticlesForm()
+GET     /articlesearch              controllers.SearchArticleController.searchArticlesForm
 
 # Search Articles with keywords
-+nocsrf
-GET     /articlesearch/go           controllers.SearchArticleController.searchArticles(keywords: String ?= "", page: Int ?= 1)
-# TODO: fix the bug with the CSRF 
+GET     /articlesearchsubmit        controllers.SearchArticleController.searchArticlesFormSubmission()
+
+# Search Articles with keywords
+GET     /articlesearch/go           controllers.SearchArticleController.searchArticles(keywords: String ?= "elevio", page: Int ?= 1)
 
