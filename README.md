@@ -27,7 +27,3 @@ which would give you lots of pages (with one article title each).
 
 To test the search feature: If using my data (my key/token) then searching for "api" will give you lots of results. 
 
-
-#### Tests
-
-still working on those ...
