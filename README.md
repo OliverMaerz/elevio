@@ -7,8 +7,7 @@
 Before using the application the `conf/api.conf.sample` needs to be copied over to `conf/api.conf` 
 and the API key and token you want to use need to be specified. 
 
-The application was written using the Play 2.7 framework in IntelliJ - so reviewing it in IntelliJ should work out 
-of the box.
+The application was written using the Play 2.7 framework.
 
 #### Articles menu
 
